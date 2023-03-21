@@ -1,35 +1,44 @@
 body {
     font-family: 'Montserrat';
+    text-align: center;
 }
 
-#title {
-    background-color: #ff4c68;
-    color: #fff;
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
 }
 
-.container-fluid {
-    padding: 3% 15% 7%;
+p {
+    color: #8f8f8f
 }
 
-h1 {
+/* Headings */
+
+.big-heading {
     font-size: 3.5rem;
     line-height: 1.5;
     font-weight: 900;
 }
 
-h2 {
-    font-weight: bold;
+.section-heading {
     font-size: 3rem;
     line-height: 1.5;
 }
 
-h3 {
-    font-weight: bold;
-    font-size: 1.5rem;
+/* Containers */
+
+.container-fluid {
+    padding: 7% 15%;
 }
 
-p {
-    color: #8f8f8f
+/* Sections */
+
+.colored-section {
+    background-color: #ff4c68;
+    color: #fff;
+}
+
+.white-section {
+    background-color: #fff;
 }
 
 /* Navigation bar */
@@ -59,8 +68,13 @@ p {
     margin: 5% 3% 5% 0;
 }
 
-/* Title Image */
+/* Title Section */
+#title .container-fluid {
+    padding: 3% 15% 7%;
+    text-align: left;
+}
 
+/* Title Image */
 .title-image {
     width: 60%;
     transform: rotate(25deg);
@@ -71,13 +85,14 @@ p {
 /* Features Section */
 
 #features {
-    padding: 7% 15%;
-    background-color: #fff;
     position: relative;
 }
 
+.feature-title {
+    font-size: 1.5rem;
+}
+
 .feature-box {
-    text-align: center;
     padding: 5%;
 }
 
@@ -94,9 +109,12 @@ p {
 /* Testimonials Section */
 
 #testimonials {
-    text-align: center;
     background-color: #ef8172;
-    color:#fff;
+}
+
+.testimonial-text {
+    font-size: 3rem;
+    line-height: 1.5;
 }
 
 .testimonial-image {
@@ -105,13 +123,8 @@ p {
     margin: 20px;
 }
 
-.carousel-inner {
-    padding: 7% 15%;
-}
-
 #press {
     background-color: #ef8172;
-    text-align: center;
     padding-bottom: 3%;
 }
 
@@ -124,7 +137,11 @@ p {
 
 #pricing {
     padding: 100px;
-    text-align: center;
+}
+
+.price-text {
+    font-size: 3rem;
+    line-height: 1.5;
 }
 
 .pricing-column  {
@@ -134,25 +151,10 @@ p {
 
 /* CTA Section */
 
-#cta {
-    padding: 7% 15%;
-    background-color: #ff4c68;
-    text-align: center;
-}
-
-.cta-heading {
-    font-weight: 900;
-    font-size: 3.5rem;
-    line-height: 1.5;
-    color: #fff;
-}
 
 /* Footer Section */
 
 #footer {
-    padding: 7% 15%;
-    background-color: #fff;
-    text-align: center;
 }
 
 .footer-icon {
