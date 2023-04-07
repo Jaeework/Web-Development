@@ -44,7 +44,12 @@ const item3 = new Item({ name: "<-- Hit this to delete an item." });
 
 const defaultItems = [item1, item2, item3];
 
+const listSchema = {
+    name: String,
+    items: [itemSchema]
+};
 
+const List = mongoose.model("List", listSchema);
 
 /* GET */
 // root route
@@ -78,6 +83,34 @@ app.get("/", function (req, res) {
 
 });
 
+// dynamic route
+app.get("/:customListName", function(req, res){
+    const customListName = req.params.customListName;
+
+    List.findOne({name: customListName}).then(function(foundList){
+        if(!foundList) {
+            const list = new List({
+                name: customListName,
+                items: defaultItems
+            });
+        
+            list.save();
+        } else {
+            res.render("list", { listTitle: "foundList.name", newListItems: foundList.itmes })
+        }
+    }).catch(function(err){
+    });
+
+    const list = new List({
+        name: customListName,
+        items: defaultItems
+    });
+
+    list.save();
+
+
+});
+/* 
 // work route
 app.get("/work", function (req, res) {
     res.render("list", { listTitle: "Work List", newListItems: workItems });
@@ -87,7 +120,7 @@ app.get("/work", function (req, res) {
 app.get("/about", function (req, res) {
     res.render("about");
 });
-
+ */
 
 /* POST */
 app.post("/", function (req, res) {
@@ -109,6 +142,17 @@ app.post("/", function (req, res) {
         res.redirect("/");
     } */
 
+});
+
+app.post("/delete", function(req, res){
+    const checkedItemId = req.body.checkbox;
+
+    Item.findByIdAndRemove(checkedItemId).then(function(){
+        console.log("Successfully deleted checked item.");
+        res.redirect("/");
+    }).catch(function(err) {
+        console.log(err);
+    });
 });
 
 
