@@ -89,24 +89,21 @@ app.get("/:customListName", function(req, res){
 
     List.findOne({name: customListName}).then(function(foundList){
         if(!foundList) {
+            // Create a new list
             const list = new List({
                 name: customListName,
                 items: defaultItems
             });
         
             list.save();
+            res.redirect("/" + customListName);
         } else {
-            res.render("list", { listTitle: "foundList.name", newListItems: foundList.itmes })
+            // Show an existing list
+            res.render("list", { listTitle: foundList.name, newListItems: foundList.items });
         }
     }).catch(function(err){
+        console.log(err);
     });
-
-    const list = new List({
-        name: customListName,
-        items: defaultItems
-    });
-
-    list.save();
 
 
 });
@@ -125,14 +122,26 @@ app.get("/about", function (req, res) {
 /* POST */
 app.post("/", function (req, res) {
     const itemName = req.body.newItem;
+    const listName = req.body.list;
 
     const item = new Item({
         name : itemName
     });
 
-    item.save();
+    if (listName === "Today") {
+        item.save();
+        res.redirect("/");
+    } else {
+        List.findOne({name: listName}).then(function(foundList) {
+            foundList.items.push(item);
+            foundList.save();
+            res.redirect("/" + listName);
+        }).catch(function(err) {
+            console.log(err);
+        });
+    }
 
-    res.redirect("/");
+    
 
     /* if (req.body.list === "Work") {
         workItems.push(item);
@@ -146,14 +155,34 @@ app.post("/", function (req, res) {
 
 app.post("/delete", function(req, res){
     const checkedItemId = req.body.checkbox;
+    const listName = req.body.listName;
 
-    Item.findByIdAndRemove(checkedItemId).then(function(){
-        console.log("Successfully deleted checked item.");
-        res.redirect("/");
-    }).catch(function(err) {
-        console.log(err);
-    });
+    if(listName === "Today") {
+        Item.findByIdAndRemove(checkedItemId).then(function(){
+            console.log("Successfully deleted checked item.");
+            res.redirect("/");
+        }).catch(function(err) {
+            console.log(err);
+        });
+    } else {
+        List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemId}}}).then(function(foundList){
+            res.redirect("/" + listName);
+        }).catch(function(err) {
+            console.log(err);
+        });
+    }
+    
 });
+
+/*
+Mongoose findOneAndUpdate()
+<ModelName>.findOneAndUpdate(
+    {conditions},
+    {$Pull: {field: {query}}},
+    function(err, results){}
+);
+
+*/
 
 
 app.listen(3000, function () {
