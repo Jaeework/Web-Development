@@ -42,12 +42,12 @@ app.post("/", function (req, res) {
     const jsonData = JSON.stringify(data);
 
     mailchimp.setConfig({
-        apiKey: "YOUR_API_KEY",
-        server: "YOUR_SERVER_PREFIX",
+        apiKey: process.env.YOUR_API_KEY,
+        server: process.env.YOUR_SERVER_PREFIX,
     });
 
     const run = async function () {
-        const response = await mailchimp.lists.batchListMembers("YOUR_LIST_ID",
+        const response = await mailchimp.lists.batchListMembers(process.env.YOUR_LIST_ID,
             jsonData
         ).then(function() {
             res.sendFile(__dirname + "/success.html");
